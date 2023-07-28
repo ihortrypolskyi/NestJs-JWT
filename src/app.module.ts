@@ -1,15 +1,16 @@
-import { Global, Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { Module } from '@nestjs/common';
+import { APP_GUARD } from "@nestjs/core";
 import { AuthModule } from './auth/auth.module';
+import { AtGuard } from "./guards";
 import { PrismaModule } from './prisma/prisma.module';
-import { PrismaService } from "./prisma/prisma.service";
 
-@Global()
 @Module({
   imports: [AuthModule, PrismaModule],
-  exports: [PrismaModule],
-  controllers: [AppController],
-  providers: [AppService]
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AtGuard
+    },
+  ],
 })
 export class AppModule {}
